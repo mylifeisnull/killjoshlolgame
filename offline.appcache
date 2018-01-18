@@ -1,5 +1,5 @@
 ﻿CACHE MANIFEST
-#1516290550
+#1516298960
 data.js
 c2runtime.js
 jquery-2.1.1.min.js
@@ -10,6 +10,8 @@ images/enemy-sheet0.png
 images/laser-sheet0.png
 images/particles.png
 images/particles2.png
+images/p_101_spritetex_gradient-sheet0.png
+images/sprite-sheet0.png
 media/lasersound.ogg
 media/explode.ogg
 media/dubmood%20-%20change%20(album%20version).ogg
