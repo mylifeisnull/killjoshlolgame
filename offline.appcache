@@ -1,5 +1,5 @@
 ﻿CACHE MANIFEST
-#1516371722
+#1516374275
 data.js
 c2runtime.js
 jquery-2.1.1.min.js
@@ -15,6 +15,7 @@ images/sprite-sheet0.png
 images/sprite2-sheet0.png
 images/tiledbackground.png
 images/bluescreenofdeathwallpaperfordesktop1920x1080fullhd-sheet0.png
+images/tiledbackground2.png
 media/lasersound.ogg
 media/explode.ogg
 media/dubmood%20-%20change%20(album%20version).ogg
