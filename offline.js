@@ -1,5 +1,5 @@
 ﻿{
-	"version": 1516367397,
+	"version": 1516371722,
 	"fileList": [
 		"data.js",
 		"c2runtime.js",
@@ -14,6 +14,8 @@
 		"images/p_101_spritetex_gradient-sheet0.png",
 		"images/sprite-sheet0.png",
 		"images/sprite2-sheet0.png",
+		"images/tiledbackground.png",
+		"images/bluescreenofdeathwallpaperfordesktop1920x1080fullhd-sheet0.png",
 		"media/lasersound.ogg",
 		"media/explode.ogg",
 		"media/dubmood - change (album version).ogg",
