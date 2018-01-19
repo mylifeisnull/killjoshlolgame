@@ -1,5 +1,5 @@
 ﻿{
-	"version": 1516298960,
+	"version": 1516367397,
 	"fileList": [
 		"data.js",
 		"c2runtime.js",
@@ -13,6 +13,7 @@
 		"images/particles2.png",
 		"images/p_101_spritetex_gradient-sheet0.png",
 		"images/sprite-sheet0.png",
+		"images/sprite2-sheet0.png",
 		"media/lasersound.ogg",
 		"media/explode.ogg",
 		"media/dubmood - change (album version).ogg",
