@@ -1,5 +1,5 @@
 ﻿{
-	"version": 1516374275,
+	"version": 1516387196,
 	"fileList": [
 		"data.js",
 		"c2runtime.js",
@@ -17,8 +17,14 @@
 		"images/tiledbackground.png",
 		"images/bluescreenofdeathwallpaperfordesktop1920x1080fullhd-sheet0.png",
 		"images/tiledbackground2.png",
+		"images/sprite3-sheet0.png",
+		"images/sprite4-sheet0.png",
+		"images/particles4.png",
+		"images/particles5.png",
+		"images/sprite5-sheet0.png",
 		"media/lasersound.ogg",
 		"media/explode.ogg",
+		"media/pu.ogg",
 		"media/dubmood - change (album version).ogg",
 		"icon-16.png",
 		"icon-32.png",
