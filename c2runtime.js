@@ -22484,6 +22484,125 @@ cr.behaviors.Fade = function(runtime)
 }());
 ;
 ;
+cr.behaviors.Flash = function(runtime)
+{
+	this.runtime = runtime;
+};
+(function ()
+{
+	var behaviorProto = cr.behaviors.Flash.prototype;
+	behaviorProto.Type = function(behavior, objtype)
+	{
+		this.behavior = behavior;
+		this.objtype = objtype;
+		this.runtime = behavior.runtime;
+	};
+	var behtypeProto = behaviorProto.Type.prototype;
+	behtypeProto.onCreate = function()
+	{
+	};
+	behaviorProto.Instance = function(type, inst)
+	{
+		this.type = type;
+		this.behavior = type.behavior;
+		this.inst = inst;				// associated object instance to modify
+		this.runtime = type.runtime;
+	};
+	var behinstProto = behaviorProto.Instance.prototype;
+	behinstProto.onCreate = function()
+	{
+		this.ontime = 0;
+		this.offtime = 0;
+		this.stage = 0;			// 0 = on, 1 = off
+		this.stagetimeleft = 0;
+		this.timeleft = 0;
+	};
+	behinstProto.saveToJSON = function ()
+	{
+		return {
+			"ontime": this.ontime,
+			"offtime": this.offtime,
+			"stage": this.stage,
+			"stagetimeleft": this.stagetimeleft,
+			"timeleft": this.timeleft
+		};
+	};
+	behinstProto.loadFromJSON = function (o)
+	{
+		this.ontime = o["ontime"];
+		this.offtime = o["offtime"];
+		this.stage = o["stage"];
+		this.stagetimeleft = o["stagetimeleft"];
+		this.timeleft = o["timeleft"];
+		if (this.timeleft === null)
+			this.timeleft = Infinity;
+	};
+	behinstProto.tick = function ()
+	{
+		if (this.timeleft <= 0)
+			return;		// not flashing
+		var dt = this.runtime.getDt(this.inst);
+		this.timeleft -= dt;
+		if (this.timeleft <= 0)
+		{
+			this.timeleft = 0;
+			this.inst.visible = true;
+			this.runtime.redraw = true;
+			this.runtime.trigger(cr.behaviors.Flash.prototype.cnds.OnFlashEnded, this.inst);
+			return;
+		}
+		this.stagetimeleft -= dt;
+		if (this.stagetimeleft <= 0)
+		{
+			if (this.stage === 0)
+			{
+				this.inst.visible = false;
+				this.stage = 1;
+				this.stagetimeleft += this.offtime;
+			}
+			else
+			{
+				this.inst.visible = true;
+				this.stage = 0;
+				this.stagetimeleft += this.ontime;
+			}
+			this.runtime.redraw = true;
+		}
+	};
+	function Cnds() {};
+	Cnds.prototype.IsFlashing = function ()
+	{
+		return this.timeleft > 0;
+	};
+	Cnds.prototype.OnFlashEnded = function ()
+	{
+		return true;
+	};
+	behaviorProto.cnds = new Cnds();
+	function Acts() {};
+	Acts.prototype.Flash = function (on_, off_, dur_)
+	{
+		this.ontime = on_;
+		this.offtime = off_;
+		this.stage = 1;		// always start off
+		this.stagetimeleft = off_;
+		this.timeleft = dur_;
+		this.inst.visible = false;
+		this.runtime.redraw = true;
+	};
+	Acts.prototype.StopFlashing = function ()
+	{
+		this.timeleft = 0;
+		this.inst.visible = true;
+		this.runtime.redraw = true;
+		return;
+	};
+	behaviorProto.acts = new Acts();
+	function Exps() {};
+	behaviorProto.exps = new Exps();
+}());
+;
+;
 cr.behaviors.Sin = function(runtime)
 {
 	this.runtime = runtime;
@@ -22880,59 +22999,20 @@ cr.behaviors.bound = function(runtime)
 			this.inst.set_bbox_changed();
 	};
 }());
-;
-;
-cr.behaviors.destroy = function(runtime)
-{
-	this.runtime = runtime;
-};
-(function ()
-{
-	var behaviorProto = cr.behaviors.destroy.prototype;
-	behaviorProto.Type = function(behavior, objtype)
-	{
-		this.behavior = behavior;
-		this.objtype = objtype;
-		this.runtime = behavior.runtime;
-	};
-	var behtypeProto = behaviorProto.Type.prototype;
-	behtypeProto.onCreate = function()
-	{
-	};
-	behaviorProto.Instance = function(type, inst)
-	{
-		this.type = type;
-		this.behavior = type.behavior;
-		this.inst = inst;				// associated object instance to modify
-		this.runtime = type.runtime;
-	};
-	var behinstProto = behaviorProto.Instance.prototype;
-	behinstProto.onCreate = function()
-	{
-	};
-	behinstProto.tick = function ()
-	{
-		this.inst.update_bbox();
-		var bbox = this.inst.bbox;
-		var layout = this.inst.layer.layout;
-		if (bbox.right < 0 || bbox.bottom < 0 || bbox.left > layout.width || bbox.top > layout.height)
-			this.runtime.DestroyInstance(this.inst);
-	};
-}());
 cr.getObjectRefTable = function () { return [
 	cr.plugins_.Audio,
 	cr.plugins_.gamepad,
-	cr.plugins_.Mouse,
-	cr.plugins_.TextBox,
 	cr.plugins_.Sprite,
+	cr.plugins_.TextBox,
 	cr.plugins_.TiledBg,
-	cr.plugins_.Text,
-	cr.plugins_.progressbar,
 	cr.plugins_.Particles,
+	cr.plugins_.progressbar,
+	cr.plugins_.Mouse,
+	cr.plugins_.Text,
 	cr.behaviors.bound,
 	cr.behaviors.Sin,
 	cr.behaviors.Fade,
-	cr.behaviors.destroy,
+	cr.behaviors.Flash,
 	cr.system_object.prototype.cnds.EveryTick,
 	cr.plugins_.Sprite.prototype.acts.SetX,
 	cr.plugins_.Mouse.prototype.exps.X,
@@ -22965,5 +23045,10 @@ cr.getObjectRefTable = function () { return [
 	cr.plugins_.Sprite.prototype.acts.SetVisible,
 	cr.system_object.prototype.cnds.OnLayoutStart,
 	cr.behaviors.Fade.prototype.acts.StartFade,
-	cr.plugins_.Sprite.prototype.acts.SetPos
+	cr.behaviors.Flash.prototype.acts.Flash,
+	cr.plugins_.Sprite.prototype.acts.SetPos,
+	cr.plugins_.TiledBg.prototype.acts.SetY,
+	cr.plugins_.TiledBg.prototype.exps.Y,
+	cr.plugins_.TiledBg.prototype.cnds.CompareY,
+	cr.behaviors.Flash.prototype.cnds.OnFlashEnded
 ];};
