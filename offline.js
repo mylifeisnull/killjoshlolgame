@@ -1,5 +1,5 @@
 ﻿{
-	"version": 1516446123,
+	"version": 1516636441,
 	"fileList": [
 		"data.js",
 		"c2runtime.js",
@@ -25,6 +25,10 @@
 		"media/lasersound.ogg",
 		"media/explode.ogg",
 		"media/pu.ogg",
+		"media/joshs1.ogg",
+		"media/joshs2.ogg",
+		"media/joshs3.ogg",
+		"media/joshs4.ogg",
 		"media/dubmood - change (album version).ogg",
 		"icon-16.png",
 		"icon-32.png",
